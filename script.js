@@ -205,7 +205,7 @@ function drawWheel() {
         ctx.fillStyle = "#333";
         ctx.font = "bold 20px 'Roboto', sans-serif";
         ctx.textAlign = "right";
-        ctx.fillText(greenPrizes[i], radius - 20, 10);
+        ctx.fillText(greenPrizeConfig[i].name, radius - 20, 10);
         ctx.restore();
     }
     ctx.restore();
