@@ -32,6 +32,8 @@ const ctx = canvas.getContext("2d");
 let wheelAngle = 0;
 let wheelSpinning = false;
 let wheelSpeed = 0;
+const PLAYED_KEY = "luckyDrawPlayed";
+const PRIZE_KEY = "luckyDrawPrize";
 
 // --- Modal ---
 function showModal(content, isHTML = false) {
@@ -99,10 +101,30 @@ function drawWheel() {
 // --- Start Game ---
 function startGreenGame() {
     if (wheelSpinning) return;
+    if (localStorage.getItem(PLAYED_KEY)) {
+        const saved = JSON.parse(localStorage.getItem(PRIZE_KEY));
+        showAlreadyPlayed(saved);
+        return;
+    }
     wheelSpinning = true;
     document.getElementById("start-btn-green").disabled = true;
     wheelSpeed = 0.35 + Math.random() * 0.25;
     requestAnimationFrame(animateWheel);
+}
+
+function showAlreadyPlayed(prize) {
+    const html = `
+        <div style="font-size: 20px; font-weight:700; color:#e65100;">⚠️ 您已經抽過囉！</div>
+        <div style="font-size: 14px; color: #888; margin: 8px 0;">每人限抽一次</div>
+        ${prize ? `
+        <div style="margin-top: 15px; padding: 15px; background: #e8f5e9; border: 2px dashed #4CAF50; border-radius: 10px;">
+            您的獎項：<strong>${prize.name}</strong> (${prize.offer})<br><br>
+            折扣碼：<strong style="color: #d32f2f; font-size: 22px; letter-spacing: 2px;">${prize.code}</strong>
+        </div>
+        <div style="font-size: 12px; color: #999; margin-top: 8px;">(請截圖保存折扣碼)</div>
+        ` : ''}
+    `;
+    showModal(html, true);
 }
 
 // --- Animate ---
@@ -136,6 +158,9 @@ function animateWheel() {
             </div>
             <div style="font-size: 12px; color: #999; margin-top: 8px;">(請截圖保存折扣碼)</div>
         `;
+        // Save to localStorage
+        localStorage.setItem(PLAYED_KEY, "true");
+        localStorage.setItem(PRIZE_KEY, JSON.stringify(prize));
         setTimeout(() => showModal(resultHTML, true), 300);
     } else {
         requestAnimationFrame(animateWheel);
@@ -144,3 +169,11 @@ function animateWheel() {
 
 // --- Init ---
 drawWheel();
+
+// Check if already played
+if (localStorage.getItem(PLAYED_KEY)) {
+    const btn = document.getElementById("start-btn-green");
+    btn.textContent = "已抽過";
+    btn.style.fontSize = "12px";
+    btn.disabled = true;
+}
