@@ -1,154 +1,55 @@
 /* Global Styles */
-body {
-    font-family: 'Roboto', 'Noto Sans TC', sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', 'Noto Sans TC', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f2f5;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff;
 }
 
 .app-container {
     width: 100%;
-    max-width: 600px;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    max-width: 500px;
+    padding: 30px 20px;
     text-align: center;
 }
 
-/* Mode Switcher */
-.mode-switcher {
+.game-title {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 5px;
+    background: linear-gradient(90deg, #f7971e, #ffd200);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.game-subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 25px;
+}
+
+/* Wheel */
+.wheel-wrapper {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.mode-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    transition: all 0.3s ease;
-}
-
-#btn-red-mode {
-    background-color: #ffebee;
-    color: #b71c1c;
-}
-#btn-red-mode.active {
-    background-color: #b71c1c;
-    color: white;
-}
-
-#btn-green-mode {
-    background-color: #e8f5e9;
-    color: #1b5e20;
-}
-#btn-green-mode.active {
-    background-color: #1b5e20;
-    color: white;
-}
-
-/* Game Sections */
-.game-section {
-    display: none;
-    flex-direction: column; /* Ensure vertical layout */
-    align-items: center;    /* Center content horizontally */
-    width: 100%;            /* Take full width of container */
-}
-
-.game-section.active {
-    display: flex;
-}
-
-/* Red Grid Game */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 10px;
-    justify-content: center; /* Center the grid itself */
-    margin: 0 auto;         /* Double insurance for centering */
-    background: #ffcdd2;
-    padding: 15px;
-    border-radius: 10px;
-    border: 4px solid #b71c1c;
-}
-
-.grid-item {
-    width: 100px;
-    height: 100px;
-    background-color: #fff;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #b71c1c;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.1s, background-color 0.1s;
-}
-
-.grid-item.active {
-    background-color: #ffeb3b; 
-    border: 3px solid #f57f17;
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #ffeb3b;
-}
-
-.grid-center {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#start-btn-red {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: none;
-    background: radial-gradient(circle, #ff5252, #d32f2f);
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.1s;
-}
-
-#start-btn-red:active {
-    transform: scale(0.95);
-}
-
-#start-btn-red:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-
-/* Green Wheel Game */
-#game-green {
-    /* Specific styles for green container if needed */
-    background: #e8f5e9; /* Light green background for the section */
-    padding: 20px;
-    border-radius: 12px;
 }
 
 .wheel-container {
     position: relative;
-    width: 320px; /* Reduced specific width */
-    height: 320px;
-    margin: 0 auto 20px; /* Center horizontally */
-    display: flex;          /* Use flex to center canvas */
+    width: 340px;
+    height: 340px;
+    margin: 0 auto;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -157,18 +58,31 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    box-shadow: 0 0 15px rgba(27, 94, 32, 0.3);
+    box-shadow: 0 0 30px rgba(255, 210, 0, 0.3), 0 0 60px rgba(255, 210, 0, 0.1);
 }
 
 .pointer {
     position: absolute;
-    top: -15px;
+    top: -18px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 30px;
-    color: #c62828; /* Red pointer */
+    font-size: 36px;
+    color: #ff4757;
     z-index: 10;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5));
+    animation: bounce 1.5s ease infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(5px);
+    }
 }
 
 #start-btn-green {
@@ -176,33 +90,47 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
-    border: 4px solid white;
-    background-color: #2e7d32;
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     color: white;
-    font-weight: bold;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 1px;
     cursor: pointer;
     z-index: 5;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.5);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+#start-btn-green:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow: 0 6px 20px rgba(238, 90, 36, 0.7);
+}
+
+#start-btn-green:active {
+    transform: translate(-50%, -50%) scale(0.95);
 }
 
 #start-btn-green:disabled {
-    background-color: #a5d6a7;
+    background: #666;
+    border-color: #888;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 /* Modal */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 100; 
+    display: none;
+    position: fixed;
+    z-index: 100;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0,0,0,0.6); 
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
     opacity: 0;
@@ -214,65 +142,76 @@ body {
 }
 
 .modal-content {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 400px;
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    color: #333;
+    padding: 35px 30px;
+    border-radius: 16px;
+    width: 85%;
+    max-width: 380px;
     text-align: center;
     position: relative;
     transform: scale(0.7);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .modal.show .modal-content {
     transform: scale(1);
 }
 
+#modal-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #2d3436;
+}
+
 .close-btn {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    top: 12px;
+    right: 18px;
     font-size: 24px;
     cursor: pointer;
     color: #aaa;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #333;
 }
 
 .result-text {
     font-size: 28px;
     font-weight: bold;
-    margin: 20px 0;
+    margin: 15px 0;
     color: #e65100;
 }
 
 .confirm-btn {
-    background-color: #2196f3;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 30px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: 700;
+    margin-top: 10px;
+    transition: transform 0.15s, box-shadow 0.15s;
 }
 
-/* Media Queries for Mobile */
+.confirm-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+}
+
+/* Mobile */
 @media (max-width: 400px) {
-    .grid-container {
-        grid-template-columns: repeat(3, 80px);
-        grid-template-rows: repeat(3, 80px);
-        gap: 5px;
-    }
-    .grid-item, .grid-center {
-        width: 80px;
-        height: 80px;
-    }
-    #start-btn-red {
-        width: 70px;
-        height: 70px;
-        font-size: 14px;
-    }
     .wheel-container {
-        width: 280px;
-        height: 280px;
+        width: 290px;
+        height: 290px;
+    }
+
+    .game-title {
+        font-size: 22px;
     }
 }
