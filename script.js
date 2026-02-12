@@ -101,9 +101,13 @@ function drawWheel() {
 // --- Start Game ---
 function startGreenGame() {
     if (wheelSpinning) return;
-    if (localStorage.getItem(PLAYED_KEY)) {
-        const saved = JSON.parse(localStorage.getItem(PRIZE_KEY));
-        showAlreadyPlayed(saved);
+    if (safeStorage.getItem(PLAYED_KEY)) {
+        try {
+            const saved = JSON.parse(safeStorage.getItem(PRIZE_KEY));
+            showAlreadyPlayed(saved);
+        } catch (e) {
+            showAlreadyPlayed(null);
+        }
         return;
     }
     wheelSpinning = true;
@@ -158,22 +162,49 @@ function animateWheel() {
             </div>
             <div style="font-size: 12px; color: #999; margin-top: 8px;">(請截圖保存折扣碼)</div>
         `;
-        // Save to localStorage
-        localStorage.setItem(PLAYED_KEY, "true");
-        localStorage.setItem(PRIZE_KEY, JSON.stringify(prize));
+        // Save to safeStorage
+        safeStorage.setItem(PLAYED_KEY, "true");
+        safeStorage.setItem(PRIZE_KEY, JSON.stringify(prize));
         setTimeout(() => showModal(resultHTML, true), 300);
     } else {
         requestAnimationFrame(animateWheel);
     }
 }
 
+// Safe LocalStorage Wrapper
+const safeStorage = {
+    getItem: (key) => {
+        try {
+            return localStorage.getItem(key);
+        } catch (e) {
+            console.warn("LocalStorage access denied:", e);
+            return sessionStorage.getItem(key); // Fallback to session
+        }
+    },
+    setItem: (key, value) => {
+        try {
+            localStorage.setItem(key, value);
+        } catch (e) {
+            console.warn("LocalStorage write denied:", e);
+            try { sessionStorage.setItem(key, value); } catch (err) { }
+        }
+    }
+};
+
 // --- Init ---
 drawWheel();
 
 // Check if already played
-if (localStorage.getItem(PLAYED_KEY)) {
+if (safeStorage.getItem(PLAYED_KEY)) {
     const btn = document.getElementById("start-btn-green");
     btn.textContent = "已抽過";
     btn.style.fontSize = "12px";
     btn.disabled = true;
+}
+
+// Ensure DOM is ready (fix for some iframe environments)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', drawWheel);
+} else {
+    drawWheel();
 }
