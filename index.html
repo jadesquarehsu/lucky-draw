@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Draw Game</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for better typography -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Mode Switcher -->
+        <div class="mode-switcher">
+            <button id="btn-red-mode" class="mode-btn" onclick="switchMode('red')">🏮 新春抽抽樂</button>
+            <button id="btn-green-mode" class="mode-btn active" onclick="switchMode('green')">🎄 聖誕轉盤樂</button>
+        </div>
+
+        <!-- Red Mode: Grid Game -->
+        <div id="game-red" class="game-section">
+            <div class="grid-container">
+                <!-- 9-Grid Layout (Sequence: 0-8) -->
+                <!-- We will generate these dynamically or static. Let's start static for structure visualization -->
+                <!-- Top Row -->
+                <div class="grid-item" data-index="0">1</div>
+                <div class="grid-item" data-index="1">2</div>
+                <div class="grid-item" data-index="2">3</div>
+                <!-- Middle Row -->
+                <div class="grid-item" data-index="7">8</div>
+                <div class="grid-center">
+                    <button id="start-btn-red" onclick="startRedGame()">開始<br>抽獎</button>
+                </div>
+                <div class="grid-item" data-index="3">4</div>
+                <!-- Bottom Row -->
+                <div class="grid-item" data-index="6">7</div>
+                <div class="grid-item" data-index="5">6</div>
+                <div class="grid-item" data-index="4">5</div>
+            </div>
+            <div class="game-info">
+                <h3>新春好運到！</h3>
+                <p>點擊中間按鈕開始抽獎</p>
+            </div>
+        </div>
+
+        <!-- Green Mode: Wheel Game -->
+        <div id="game-green" class="game-section active">
+            <div class="wheel-container">
+                <div class="pointer">▼</div>
+                <canvas id="wheel-canvas" width="500" height="500"></canvas>
+                <button id="start-btn-green" onclick="startGreenGame()">SPIN</button>
+            </div>
+            <div class="game-info">
+                <h3>聖誕轉盤樂</h3>
+                <p>點擊 SPIN 開始旋轉</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">恭喜獲得！</h2>
+            <div id="modal-result" class="result-text">獎品名稱</div>
+            <button class="confirm-btn" onclick="closeModal()">確定</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
